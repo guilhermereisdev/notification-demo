@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayNotification() {
         val notificationId = 45
+
+        // Ao clicar na notificação leva para a MainActivity
         val tapResultIntent = Intent(this, MainActivity::class.java)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             this,
@@ -40,6 +42,29 @@ class MainActivity : AppCompatActivity() {
             PendingIntent.FLAG_IMMUTABLE
         )
 
+        // Botão "Details" na notificação que leva para a DetailsActivity
+        val tapResultIntentDetails = Intent(this, DetailsActivity::class.java)
+        val pendingIntentDetails: PendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            tapResultIntentDetails,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        val actionDetails: NotificationCompat.Action =
+            NotificationCompat.Action.Builder(0, "Details", pendingIntentDetails).build()
+
+        // Botão "Settings" na notificação que leva para a SettingsActivity
+        val tapResultIntentSettings = Intent(this, SettingsActivity::class.java)
+        val pendingIntentSettings: PendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            tapResultIntentSettings,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        val actionSettings: NotificationCompat.Action =
+            NotificationCompat.Action.Builder(0, "Settings", pendingIntentSettings).build()
+
+        // Cria a notificação
         val notification = NotificationCompat.Builder(this@MainActivity, channelId)
             .setContentTitle("Demo title")
             .setContentText("This is a demo notification")
@@ -47,6 +72,8 @@ class MainActivity : AppCompatActivity() {
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
+            .addAction(actionDetails)
+            .addAction(actionSettings)
             .build()
         notificationManager?.notify(notificationId, notification)
     }
