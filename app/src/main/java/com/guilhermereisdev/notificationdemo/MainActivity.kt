@@ -2,7 +2,9 @@ package com.guilhermereisdev.notificationdemo
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,12 +32,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayNotification() {
         val notificationId = 45
+        val tapResultIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            tapResultIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(this@MainActivity, channelId)
             .setContentTitle("Demo title")
             .setContentText("This is a demo notification")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
             .build()
         notificationManager?.notify(notificationId, notification)
     }
